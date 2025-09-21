@@ -1,0 +1,18 @@
+{
+  "name": "pizzatech",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "commit": "git add . && git cz"
+  },
+  "devDependencies": {
+    "cz-conventional-changelog": "^3.3.0",
+    "cz-customizable": "^7.5.1"
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-customizable"
+    }
+  }
+}
