@@ -15,7 +15,7 @@ module.exports = {
   ],
 
   // escopos dos commits
-  scopes: [{ name: 'frontend' }, { name: 'backend' }, { name: 'api' }, { name: 'fullstack' }, { name: 'ui' }, { name: 'database' }, { name: 'docs' }],
+  scopes: [{ name: 'frontend' }, { name: 'backend' }, { name: 'fullstack' }, { name: 'ui' }, { name: 'database' }, { name: 'docs' }, { name: 'infra' }, { name: 'devops' }],
 
   // Desativa ou ativa a pergunta do 'breaking change' (Alteração que quebra a compatibilidade)
   // O padrão é false
