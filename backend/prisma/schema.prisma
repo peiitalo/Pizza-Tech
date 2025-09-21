@@ -14,11 +14,126 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+
 model Administrador {
-  id        Int      @id @default(autoincrement())
-  name      String
+  id        String   @id @default(uuid())
+  nome      String
   email     String   @unique
-  password  String
+  senha     String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+model Usuario {
+  id         String    @id @default(uuid())
+  nome       String
+  email      String    @unique
+  senha      String
+  avatar     String?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  enderecos  Endereco[]
+  telefones  Telefone[]
+  cartoes    Cartao[]
+  favoritos Favorito[]
+  avaliacoes Avaliacao[]
+  pedidos    Pedido[]
+}
+
+model Endereco {
+  id         String   @id @default(uuid())
+  rua        String
+  numero     String
+  complemento String?
+  bairro     String
+  cidade     String
+  estado     String
+  cep        String
+  usuarioId  String
+  usuario    Usuario  @relation(fields: [usuarioId], references: [id])
+}
+
+model Telefone {
+  id        String   @id @default(uuid())
+  numero    String
+  usuarioId String
+  usuario   Usuario  @relation(fields: [usuarioId], references: [id])
+}
+
+model Cartao {
+  id            String   @id @default(uuid())
+  numero        String
+  nomeNoCartao  String
+  validade      String
+  cvv           String
+  usuarioId     String
+  usuario       Usuario  @relation(fields: [usuarioId], references: [id])
+}
+
+model Favorito {
+  id        String   @id @default(uuid())
+  usuarioId String
+  produtoId String
+  usuario   Usuario  @relation(fields: [usuarioId], references: [id])
+  produto   Produto  @relation(fields: [produtoId], references: [id])
+  
+  @@unique([usuarioId, produtoId])
+}
+
+model Produto {
+  id          String      @id @default(uuid())
+  nome        String
+  descricao   String
+  preco       Float
+  imagem      String?
+  categoriaId String
+  estoque     Int
+  codigoBarras String?
+  disponivel  Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  categoria   Categoria   @relation(fields: [categoriaId], references: [id])
+  avaliacoes  Avaliacao[]
+  favoritos   Favorito[]
+  pedidoItens PedidoItem[]
+}
+
+model Categoria {
+  id       String    @id @default(uuid())
+  nome     String    @unique
+  produtos Produto[]
+}  
+
+model Avaliacao {
+  id        String   @id @default(uuid())
+  nota      Int
+  comentario String?
+  usuarioId String
+  produtoId String
+  usuario   Usuario  @relation(fields: [usuarioId], references: [id])
+  produto   Produto  @relation(fields: [produtoId], references: [id])
+  
+  @@unique([usuarioId, produtoId])
+}
+
+model Pedido {
+  id          String       @id @default(uuid())
+  usuarioId   String
+  status      String
+  total       Float
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  usuario     Usuario      @relation(fields: [usuarioId], references: [id])
+  pedidoItens PedidoItem[]
+}
+
+model PedidoItem {
+  id        String   @id @default(uuid())
+  pedidoId  String
+  produtoId String
+  quantidade Int
+  pedido    Pedido   @relation(fields: [pedidoId], references: [id])
+  produto   Produto  @relation(fields: [produtoId], references: [id])
+  
+  @@unique([pedidoId, produtoId])
+}
+
